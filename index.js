@@ -4,7 +4,7 @@ require('dotenv').config();
 // custom
 const db = require('./sql/index');
 const { getAllQuestions } = require('./controller/question');
-const { getTest, deleteTest, createTest } = require('./controller/test');
+const { getAllTests, getTest, deleteTest, createTest } = require('./controller/test');
 const answers = require('./controller/answer');
 const { getScores } = require('./controller/score');
 // npm
@@ -24,10 +24,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Home Page Get
 app.get('/', async (req, res) => {
-	const queryString = 'SELECT * FROM test';
-	const { rows } = await db.query(queryString);
-
-	res.render('index', { tests: rows });
+	getAllTests((tests) => {
+		res.render('index', { tests });
+	});
 });
 
 // Take Test Get

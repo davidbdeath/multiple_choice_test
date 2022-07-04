@@ -27,7 +27,12 @@ module.exports.getTest = async (testId, callback) => {
 	callback(testQuestions, testName);
 };
 
-const getAllTests = async () => {};
+module.exports.getAllTests = async (callback) => {
+	const queryString = 'SELECT * FROM test';
+	const { rows: tests } = await pool.query(queryString);
+
+	callback(tests)
+};
 
 module.exports.deleteTest = async (testId) => {
 	const sql = 'DELETE FROM test WHERE test_id = $1;';
