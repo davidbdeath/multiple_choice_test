@@ -1,0 +1,26 @@
+nontrivial functional dependencies:
+
+quest_id -> quest_text, correct_ans
+test_id -> test_name, due_date
+ans_id -> ans_text
+score_id -> test_id, student_name, score, late
+
+Proof of 3NF:
+
+answer (ans_id, ans_text)
+    ans_id is a superkey for answer
+    
+question (quest_id, quest_text, correct_ans)
+    quest_id is a superkey for question
+
+test (test_id, test_name)
+    test_id is a superkey for test
+    
+question_answer (quest_id, ans_id)
+    quest_id, ans_id -> quest_id, ans_id is a trivial functional dependency
+
+test_question (test_id, quest_id)
+    test_id, quest_id -> test_id, quest_id is a trivial functional dependency
+    
+score (test_id, student_name, score)
+    score_id is a superkey for score

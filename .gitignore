@@ -1,0 +1,13 @@
+.env
+/node_modules/
+.nova/
+.vscode/
+*.DS_Store
+*.xd
+*.sketch
+*.fig
+prepros.config
+package-lock.json
+.prettierrc
+/index copy.js
+/sql/test.js
