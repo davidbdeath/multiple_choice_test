@@ -1,18 +1,22 @@
 // use .env environment variables
 require('dotenv').config();
 
+// npm
+const express = require('express');
+const app = express();
+const path = require('path');
+const ejsMate = require('ejs-mate');
+
 // custom
 const db = require('./sql/index');
 const { getAllQuestions } = require('./controller/question');
 const { getAllTests, getTest, deleteTest, createTest } = require('./controller/test');
 const answers = require('./controller/answer');
 const { getScores } = require('./controller/score');
-// npm
-const express = require('express');
-const app = express();
-const path = require('path');
+
 
 // express logic
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set(express.static(path.join(__dirname, 'views')));
 app.use(express.urlencoded({ extended: true }));
@@ -23,13 +27,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ------------------------ //
 
 // Home Page Get
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
 	getAllTests((tests) => {
 		res.render('index', { tests });
 	});
 });
 
-// Take Test Get
+// Take Test
 app.get('/test-take/:testId', async (req, res) => {
 	const { testId } = req.params;
 
@@ -39,13 +43,13 @@ app.get('/test-take/:testId', async (req, res) => {
 });
 
 // New Test Form
-app.get('/test-new-form', async (req, res) => {
+app.get('/test-new-form', (req, res) => {
 	getAllQuestions((questions) => {
 		res.render('test-new-form', { questions });
 	});
 });
 
-// Create New Test
+// New Test Create 
 app.post('/test-new-post', async (req, res) => {
 	// console.log(req.body)
 	const { test_name: testName, selected_questions: questions } = req.body;
@@ -54,6 +58,7 @@ app.post('/test-new-post', async (req, res) => {
 	res.redirect('/');
 });
 
+// Delete Test
 app.post('/test-delete', async (req, res) => {
 	const { test_id } = req.body;
 	await deleteTest(test_id);
@@ -64,6 +69,13 @@ app.post('/test-delete', async (req, res) => {
 app.post('/grade-test', async (req, res) => {
 	res.redirect('/');
 });
+
+// New Question Create
+app.post('/new-question-post', (req, res) => {
+	console.log(req.body);
+});
+
+
 
 // Scores Get
 app.get('/scores', async (req, res) => {
