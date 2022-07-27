@@ -38,3 +38,39 @@ module.exports.deleteTest = async (testId) => {
 	const sql = 'DELETE FROM test WHERE test_id = $1;';
 	const { rows: test } = await pool.query(sql, [testId]);
 };
+
+module.exports.gradeTest = async (req) => {
+	const { 0: testId } = req.params;
+	const testLength = Object.keys(req.body).length;
+	const submitted = req.body;
+	const subAnswers = [];
+	const correctAnswers = [];
+	let correct = 0;
+	let incorrect = 0;
+
+	//get submitted answers only from req.body and create an array
+	for (const key in submitted) {
+		if (Object.hasOwnProperty.call(submitted, key)) {
+			subAnswers.push(submitted[key]);
+		}
+	}
+
+	//get correct answers from database for test
+	await this.getTest(testId, (testQuestions) => {
+		for (const answer of testQuestions) {
+			correctAnswers.push(answer.correct_ans);
+		}
+	});
+
+	// compare submitted answers with correct answers
+	for (let i = 0; i < testLength; i++) {
+		if (subAnswers[i] === correctAnswers[i]) {
+			correct++;
+		} else {
+			incorrect++;
+		}
+	}
+	
+	const grade = `${Math.round(correct / testLength * 100)}%`;
+	return {correct, incorrect, testLength, grade};
+}

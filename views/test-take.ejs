@@ -10,7 +10,7 @@
 	</header>
 
 	<main>
-		<form id="test" action="/grade-test" method="post">
+		<form id="test" action="/grade-test/<%= testId %>" method="post">
 			<% testQuestions.forEach((question) => { %>
 			<div class="card mb-5">
 				<div class="card-body">

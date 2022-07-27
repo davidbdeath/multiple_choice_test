@@ -10,7 +10,7 @@ const ejsMate = require('ejs-mate');
 // custom
 const db = require('./sql/index');
 const { getAllQuestions } = require('./controller/question');
-const { getAllTests, getTest, deleteTest, createTest } = require('./controller/test');
+const { getAllTests, getTest, deleteTest, createTest, gradeTest } = require('./controller/test');
 const answers = require('./controller/answer');
 const { getScores } = require('./controller/score');
 
@@ -65,13 +65,17 @@ app.post('/test-delete', async (req, res) => {
 	res.redirect('/');
 });
 
+// TODO create edit test router
+
 // Grade Test Post
-app.post('/grade-test', async (req, res) => {
-	res.redirect('/');
+app.post('/grade-test/*', async (req, res) => {
+	const { correct, incorrect, testLength, grade } = await gradeTest(req);
+	console.log(grade)
 });
 
 // New Question Create
 app.post('/new-question-post', (req, res) => {
+	// TODO finish Question Create
 	console.log(req.body);
 });
 
