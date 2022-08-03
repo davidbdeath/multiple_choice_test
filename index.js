@@ -80,7 +80,6 @@ app.post('/new-question-post', (req, res) => {
 });
 
 
-
 // Scores Get
 app.get('/scores', async (req, res) => {
 	getScores((scores) => {
